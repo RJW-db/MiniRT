@@ -7,7 +7,7 @@ services:
     volumes:
       - ./scenes:/workspace/scenes  # <== Mount your scenes directory
       - /tmp/.X11-unix:/tmp/.X11-unix  # <== Required for X11 access
-    environment:
-      - DISPLAY=${DISPLAY}             # <== Pass DISPLAY from host
+    # environment:
+    #   - DISPLAY=${DISPLAY}             # <== Pass DISPLAY from host
     working_dir: /workspace
     tty: true

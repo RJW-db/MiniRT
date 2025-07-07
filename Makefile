@@ -43,13 +43,20 @@ OFLAGS			+=	-fno-signed-zeros
 #		This flag tells the compiler that floating-point operations cannot generate traps (such as overflow or division by zero), allowing for more aggressive optimizations.
 OFLAGS			+=	-fno-trapping-math
 
+# Detect screen resolution
 ifeq ($(OS), Linux)
-	SCREEN_RES	:=	$(shell xrandr | grep '*' | uniq | awk '{print $$1}')
-	OFLAG		+=	-fsingle-precision-constant -flto=auto -fuse-linker-plugin
-else ifeq ($(OS), Darwin)  # macOS
-	SCREEN_RES	:=	$(shell system_profiler SPDisplaysDataType 2>/dev/null | grep Resolution | head -n 1 | awk '{print $$2"x"$$4}')
-	OFLAGS		+=	-flto
+    SCREEN_RES	:=	$(shell xrandr 2>/dev/null | grep '*' | uniq | awk '{print $$1}' | head -1)
+    OFLAGS		+=	-fsingle-precision-constant -flto=auto -fuse-linker-plugin
+else ifeq ($(OS), Darwin)
+    SCREEN_RES	:=	$(shell system_profiler SPDisplaysDataType 2>/dev/null | grep Resolution | head -n 1 | awk '{print $$2"x"$$4}')
+    OFLAGS		+=	-flto
 endif
+
+# Fallback to default resolution if detection failed
+ifeq ($(SCREEN_RES),)
+    SCREEN_RES	:=	1920x1080
+endif
+
 SCREEN_WIDTH	:=	$(shell echo $(SCREEN_RES) | cut -d 'x' -f 1)
 SCREEN_HEIGHT	:=	$(shell echo $(SCREEN_RES) | cut -d 'x' -f 2)
 CFLAGS			+=	$(OFLAGS)

@@ -5,7 +5,8 @@ xhost +local:docker
 sudo apt install x11-xserver-utils
 
 # 2. Build the Docker image without cache and start container in detached mode
-docker compose build --no-cache
+linux	docker compose build --no-cache
+Mac		docker-compose build --no-cache
 docker compose up -d
 
 # 3. Enter the running container
