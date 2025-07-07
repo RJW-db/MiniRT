@@ -26,7 +26,7 @@ CFLAGS			+=	-Werror
 CFLAGS			+=	-MMD -MP
 CFLAGS			+=	-g
 #		Werror cannot go together with fsanitize, because fsanitize won't work correctly.
-CFLAGS			+=	-fsanitize=address
+# CFLAGS			+=	-fsanitize=address
 
 #		Temporary CFLAGS
 CFLAGS			+=	-pthread -D THREADS=$(if $(filter-out 1,$(N_JOBS)),2,1)
